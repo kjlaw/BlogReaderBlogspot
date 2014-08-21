@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
@@ -125,8 +126,12 @@ public class MainListActivity extends ListActivity {
 					
 					JSONObject publishedObject = entry.getJSONObject(KEY_PUBLISHED);
 					String tPublished = publishedObject.getString("$t");
-					DateTimeFormatter parser = ISODateTimeFormat.dateTime();
-					String published = parser.parseDateTime(tPublished).toString();
+					DateTime publishedDateTime = DateTime.parse(tPublished);
+					String publishedDayOfWeek = publishedDateTime.dayOfWeek().getAsText();
+					String publishedMonthOfYear = publishedDateTime.monthOfYear().getAsText();
+					String publishedDayOfMonth = publishedDateTime.dayOfMonth().getAsText();
+					String publishedYear = publishedDateTime.year().getAsText();
+					String published = publishedDayOfWeek + ", " + publishedMonthOfYear + " " + publishedDayOfMonth + ", " + publishedYear;
 					
 					HashMap<String, String> blogEntry = new HashMap<String, String>();
 					blogEntry.put(KEY_TITLE, title);
