@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +26,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -65,6 +65,29 @@ public class MainListActivity extends ListActivity {
     }
     
     @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	int itemId = item.getItemId();
+		
+		if (itemId == R.id.action_settings) {
+			viewSettings();
+		}
+		
+    	return super.onOptionsItemSelected(item);
+    }
+    
+    private void viewSettings() {
+    	Intent intent = new Intent(this, SettingsActivity.class);
+		startActivity(intent);
+	}
+
+	@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
     	super.onListItemClick(l, v, position, id);
     	try {
@@ -174,7 +197,7 @@ public class MainListActivity extends ListActivity {
 			JSONObject jsonResponse = null;
 			
 	        try {
-	        	URL blogFeedUrl = new URL("http://firstinmichigan.blogspot.com/feeds/posts/default?alt=json&max-results=" + NUMBER_OF_POSTS);
+	        	URL blogFeedUrl = new URL("http://" + SettingsActivity.mInputText + ".blogspot.com/feeds/posts/default?alt=json&max-results=" + NUMBER_OF_POSTS);
 	        	HttpURLConnection connection = (HttpURLConnection) blogFeedUrl.openConnection();
 	        	connection.connect();
 	        	
